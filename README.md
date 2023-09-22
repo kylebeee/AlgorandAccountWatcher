@@ -45,9 +45,9 @@ This endpoint will return a json object containing all the addresses being watch
 Both endpoints return the following structure
 ```json
 {
-    "ok": boolean,
-    "results?": any,
-    "error?": string
+    "ok": "boolean",
+    "results": "any",
+    "error": "string"
 }
 ```
-with the result being either a confirmation message or the list of addresses and their balances.
+The result being either a confirmation message or the list of addresses and their balances. results or error will be missing depending on the status of the request.
