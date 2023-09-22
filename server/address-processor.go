@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 )
 
 type SlimmedAccountState struct {
@@ -33,6 +34,7 @@ func (s *Server) ProcessAddress(address string) error {
 		}
 
 		s.WatchList.Subs.Store(address, sas)
+		fmt.Printf("[ADDED] - %v\n", address)
 		return nil
 	}
 
@@ -41,25 +43,26 @@ func (s *Server) ProcessAddress(address string) error {
 
 	// check for changes in balances
 	if ps.Amount != response.Amount {
-		changes = append(changes, fmt.Sprintf("\t      [BALANCE CHANGE]: %v -> %v\n", ps.Amount, response.Amount))
+		changes = append(changes, fmt.Sprintf("         [0]: %v -> %v\n", ps.Amount, response.Amount))
 	}
 
 	newAssetAmounts := map[uint64]uint64{}
 	for _, asset := range response.Assets {
+		offset := 10 - len(fmt.Sprintf("%v", asset.AssetId))
 		newAssetAmounts[asset.AssetId] = asset.Amount
 		previousAssetAmount, ok := ps.Assets[asset.AssetId]
 		if !ok {
-			changes = append(changes, fmt.Sprintf("\t[ASSET BALANCE CHANGE][%v]: 0 -> %v\n", asset.AssetId, asset.Amount))
+			changes = append(changes, fmt.Sprintf("%v[%v]: 0 -> %v\n", strings.Repeat(" ", offset), asset.AssetId, asset.Amount))
 			continue
 		}
 
 		if previousAssetAmount != asset.Amount {
-			changes = append(changes, fmt.Sprintf("\t[ASSET BALANCE CHANGE][%v]: %v -> %v\n", asset.AssetId, previousAssetAmount, asset.Amount))
+			changes = append(changes, fmt.Sprintf("%v[%v]: %v -> %v\n", strings.Repeat(" ", offset), asset.AssetId, previousAssetAmount, asset.Amount))
 		}
 	}
 
 	if len(changes) > 0 {
-		fmt.Printf("[ADDRESS CHANGE][%v]:\n", address)
+		fmt.Printf("\n[BALANCE CHANGE] - %v\n", address)
 		for _, change := range changes {
 			fmt.Printf("%v", change)
 		}

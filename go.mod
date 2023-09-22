@@ -3,7 +3,6 @@ module github.com/kylebeee/AlgorandAccountWatcher
 go 1.21.0
 
 require (
-	github.com/algorand/go-algorand-sdk v1.24.0
 	github.com/algorand/go-algorand-sdk/v2 v2.3.0
 	github.com/getsentry/sentry-go v0.24.1
 	github.com/gin-gonic/gin v1.9.1

@@ -1,5 +1,3 @@
-github.com/algorand/go-algorand-sdk v1.24.0 h1:mi8vqjXMC5nU87snq4vxHi+NgPR0thtZHRLA16FKZMM=
-github.com/algorand/go-algorand-sdk v1.24.0/go.mod h1:WEeJcctOHMzDFTgVJ6GT8BLUo9DbFTT47S+Kzx7ffXQ=
 github.com/algorand/go-algorand-sdk/v2 v2.3.0 h1:WkdZ3EleBZ+DO0KbNvdmmJLv892ghbtQI0A/H165emw=
 github.com/algorand/go-algorand-sdk/v2 v2.3.0/go.mod h1:Xk569fTpBTV0QtE74+79NTl6Rz3OC1K3iods4uG0ffU=
 github.com/algorand/go-codec/codec v1.1.10 h1:zmWYU1cp64jQVTOG8Tw8wa+k0VfwgXIPbnDfiVa+5QA=

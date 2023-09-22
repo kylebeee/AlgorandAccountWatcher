@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"sync"
 	"time"
 
@@ -15,7 +16,7 @@ import (
 // New is our server constructor function
 // this function takes in paramaters from the command line
 // and returns a server struct ready to run
-func New(mainnet bool, sentryDSN string, tz string) *Server {
+func New(mainnet bool, sentryDSN string, tz string, port string) *Server {
 	var (
 		err error
 		env string
@@ -27,10 +28,12 @@ func New(mainnet bool, sentryDSN string, tz string) *Server {
 		env = "testnet"
 	}
 
-	s := &Server{
-		Engine: gin.Default(),
-	}
-	s.Use(CORSMiddleware())
+	// s := &Server{
+	// 	Engine: gin.Default(),
+	// }
+
+	router := gin.Default()
+	router.Use(CORSMiddleware())
 
 	if sentryDSN != "" {
 		hub := sentry.CurrentHub()
@@ -44,10 +47,19 @@ func New(mainnet bool, sentryDSN string, tz string) *Server {
 		}
 
 		hub.BindClient(client)
-		s.Use(sentrygin.New(sentrygin.Options{
+		router.Use(sentrygin.New(sentrygin.Options{
 			Repanic: true,
 		}))
 	}
+
+	s := &Server{
+		Server: &http.Server{
+			Addr:    ":" + port,
+			Handler: router,
+		},
+	}
+
+	s.routes(router)
 
 	s.LocalTime, err = time.LoadLocation(tz)
 	if err != nil {
@@ -67,9 +79,7 @@ func New(mainnet bool, sentryDSN string, tz string) *Server {
 		},
 		true,
 	)
-
-	// initialize our api routes
-	s.routes()
+	go s.WatchList.Start()
 
 	go func() {
 		interval := time.NewTicker(time.Minute)
@@ -93,6 +103,6 @@ func NewWatchList[L ListType](processors []Processor[L], ignoreFailures bool) *W
 	return &WatchList[L]{
 		Subs:       &sync.Map{},
 		Processors: processors,
-		ListChan:   make(chan []L, 1000),
+		ListChan:   make(chan []L, 100),
 	}
 }

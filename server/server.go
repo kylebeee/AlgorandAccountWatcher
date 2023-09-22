@@ -1,6 +1,9 @@
 package server
 
 import (
+	"context"
+	"log"
+	"net/http"
 	"time"
 
 	"github.com/algorand/go-algorand-sdk/v2/client/v2/algod"
@@ -9,8 +12,7 @@ import (
 )
 
 type Server struct {
-	*gin.Engine
-	Exporter  Exporter
+	*http.Server
 	LocalTime *time.Location
 	Sentry    *sentry.Client
 	Algod     *algod.Client
@@ -23,10 +25,14 @@ func (s *Server) Close() {
 		sentry.Flush(2 * time.Second)
 	}
 
-	s.Exporter.Close()
+	err := s.Shutdown(context.Background())
+	if err != nil {
+		log.Fatalf("[ERROR][Server.Close] %v\n", err)
+	}
+	log.Println("[INFO][Server.Close] server shutdown")
 }
 
-// middleware we add so rest api can be called from any domain via JS
+// middleware we add so rest api can be called from any domain via javascript
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")

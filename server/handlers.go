@@ -76,21 +76,19 @@ func (s *Server) handleAddToWatchlist() gin.HandlerFunc {
 }
 
 func (s *Server) handleGetWatchlist() gin.HandlerFunc {
-	const operation = "handleAddToWatchlist"
 
 	type response struct {
-		Ok     bool                  `json:"ok"`
-		Result []SlimmedAccountState `json:"result,omitempty"`
-		Error  string                `json:"error,omitempty"`
+		Ok     bool                           `json:"ok"`
+		Result map[string]SlimmedAccountState `json:"result,omitempty"`
+		Error  string                         `json:"error,omitempty"`
 	}
 
 	return func(c *gin.Context) {
-		var (
-			resp response
-		)
-
+		resp := response{
+			Result: map[string]SlimmedAccountState{},
+		}
 		s.WatchList.Subs.Range(func(key, value interface{}) bool {
-			resp.Result = append(resp.Result, value.(SlimmedAccountState))
+			resp.Result[key.(string)] = value.(SlimmedAccountState)
 			return true
 		})
 
