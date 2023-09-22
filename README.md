@@ -24,3 +24,30 @@ You can compile and run the server with the following command
 ```bash
 go run ./main.go
 ```
+
+### Endpoints
+
+The server only has two endpoints that can be called
+
+```
+GET /add/{address}
+```
+*We really should be doing a POST request here but lets keep it easy to test in the browser*
+
+This endpoint will add the address to the watchlist and start checking it for balance changes. It will return a 200 status code if successful or a 400 status code if the address is invalid.
+
+```
+GET /list
+```
+
+This endpoint will return a json object containing all the addresses being watched and their latest balances. It will return a 200 status code if successful or a 500 status code if there was an error.
+
+Both endpoints return the following structure
+```json
+{
+    "ok": boolean,
+    "results?": any,
+    "error?": string
+}
+```
+with the result being either a confirmation message or the list of addresses and their balances.
