@@ -14,10 +14,10 @@ You'll need go 1.21 installed on your local machine. See https://go.dev/ for ins
 ### Running the Server
 
 This Rest API supports several optional flags:
-<br><br> -m: whether to run on mainnet or not (defaults to testnet)
-<br> -sentryDSN: the sentry DSN to use for error reporting
-<br> -tz: the timezone to use (defaults to Local)
-<br> -port: the port to listen on (defaults to 8080)
+<br><br> -m : whether to run on mainnet or not (defaults to testnet)
+<br> -sentry : the sentry DSN to use for error reporting
+<br> -tz : the timezone to use (defaults to Local)
+<br> -p : the port to listen on (defaults to 8080)
 
 You can compile and run the server with the following command
 ( just make sure you're in the root directory of the project ):
