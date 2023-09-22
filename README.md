@@ -1,4 +1,4 @@
-# AlgorandAccountWatcher
+# Algorand Account Watcher
 Algorand account watcher service example.
 
 ## Getting Started
@@ -19,7 +19,8 @@ This Rest API supports several optional flags:
 <br> -- timezone: the timezone to use (defaults to Local)
 <br> -- port: the port to listen on (defaults to 8080)
 
-You can compile and run the server with the following command (just make sure you're in the root directory of the project):
+You can compile and run the server with the following command
+( just make sure you're in the root directory of the project ):
 ```bash
 go run ./main.go
 ```
