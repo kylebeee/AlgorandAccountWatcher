@@ -17,8 +17,8 @@ func main() {
 	// flags to add
 	mainnet := flag.Bool("m", false, "whether to run on mainnet or not")
 	sentryDSN := flag.String("sentry", "", "sentry dsn for where to send error logs")
-	timezone := flag.String("tz", "America/Los_Angeles", "timezone to use for logging")
-	port := flag.String("p", "3000", "port to run server on")
+	timezone := flag.String("tz", "Local", "timezone to use for logging")
+	port := flag.String("p", "8080", "port to run server on")
 	flag.Parse()
 
 	// start server
